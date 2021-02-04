@@ -1,0 +1,45 @@
+{
+    "login": {
+        "userName": "Staff ID or Email",
+        "password": "Password"
+    },
+    "menu": {
+        "home": "Home",
+        "security": "Security",
+        "business_units": "Business Units",
+        "teams": "Teams",
+        "users": "Users",
+        "abilities": "Abilities",
+        "roles": "Roles",
+        "email_confiuration": "Email Confiuration",
+        "mailboxes": "Mailboxes",
+        "queues": "Queues",
+        "emails": "Emails",
+        "templates": "Templates",
+        "processes": "Processes",
+        "triggers": "Triggers",
+        "cronjobs": "Cronjobs",
+        "application": "Application",
+        "apps": "Apps",
+        "entites": "Entites",
+        "views": "Views",
+        "forms": "Forms",
+        "data_management": "Data Management",
+        "imports": "Imports",
+        "logs": "Logs",
+        "system_logs": "System Logs",
+        "audit_histories": "Audit Histories",
+        "search_records": "Search Records"
+    },
+    "others": {
+        "setting": "Setting",
+        "logout": "Logout",
+        "change_password": "Change Password"
+    },
+    "routine": {
+        "required": "Required"
+    },
+    "security": {
+        "user_title": "Security / User"
+    }
+}

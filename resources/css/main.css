@@ -1,0 +1,60 @@
+
+/*.clearfix:after{ display: block; content: ''; clear: both;}*/
+.csfe-min-height-100vh{ min-height: 100vh;}
+.csfe-flex{ width: 100%; display: flex; justify-content: center; align-content: center; align-items: center;flex-flow:row wrap;}
+.csfe-flex-item{ padding: 12px;}
+
+.login_bg{ flex: 1; height: 100vh; background-image: url("../images/cover2.jpg"); background-size: 100% 100%; background-position: center; background-repeat: no-repeat;}
+.login_box{ width: 400px; text-align: center;}
+
+.login-input .el-input__inner{ border: 0!important; border-bottom: 1px solid #DCDFE6!important;border-radius: 0!important;background: transparent!important;}
+.login-btn{background-color: #00b5cb!important;border-color: #02b5cb!important;}
+.login-btn:hover{background-color: #09a4b7!important;border-color: #09a4b7!important;}
+
+.logo-box img{ height: 46px; display: inline-block;}
+.collapsed-sidebar .secondary-sidebar .secondary-sidebar-bar .logo-box{ visibility: initial; overflow: hidden;}
+.collapsed-sidebar .secondary-sidebar .secondary-sidebar-bar .logo-box img{ height: auto; width: 94%;}
+
+
+.simplebar-scrollbar:before{ background-color: #8c8c8c!important;}
+.simplebar-track.simplebar-vertical { width: 8px!important;}
+
+
+.pl-40{ padding-left: 40px!important;}
+.pl-50{ padding-left: 50px!important;}
+.mt-8px{ margin-top: 8px!important;}
+.mt-12px{ margin-top: 12px!important;}
+.mt-15px{ margin-top: 15px!important;}
+.mr-10{ margin-right: 10px!important;}
+.line-height-36{ line-height: 36px!important;}
+
+.color-ffffff{ color: #ffffff!important;}
+
+.calc-height{ height: calc(100vh - 200px);}
+
+.header-top-select .el-input__inner{background-color: #2a3f54; color: #ffffff; line-height: 32px; height: 32px;}
+.header-top-select .el-input__icon{ line-height: 32px;}
+
+.header-log-down{ margin-top: 15px; margin-right: 20px;}
+.header-log-down *{ float: left}
+.header-log-down img{ width: 30px; height: 30px; border-radius: 100%; display: inline-block;}
+.header-log-down i{ line-height: 30px;}
+.header-log-down span{ line-height: 30px; display: inline-block; padding: 0 5px;}
+
+.menu-icon-box{ padding-right: 10px; width: 30px!important; text-align: center!important;}
+.secondary-sidebar-menu ul li .contx-menu-btn{ padding: 0!important; line-height: 56px!important;}
+.el-li-hover a:hover{ color: #ffffff!important;}
+.two-item{ height: 33px!important; line-height: 33px!important;}
+.two-item a{ border-left: 1px solid #425668;}
+
+
+
+
+
+
+
+
+
+
+
+

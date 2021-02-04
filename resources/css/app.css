@@ -1,0 +1,7 @@
+/*@import 'tailwindcss/base';*/
+/*@import 'tailwindcss/components';*/
+/*@import 'tailwindcss/utilities';*/
+
+@import "concept.min.css";
+@import "bootstrap.min.css";
+@import "main.css";
