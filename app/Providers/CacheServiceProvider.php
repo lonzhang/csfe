@@ -151,21 +151,24 @@ class CacheServiceProvider
 		//检查是否存在对应缓存，不存在则从数据库中获取并创建缓存
 		if(!Cache::has('bd_app_menu')){
 			$model = new CsfeApp;
-			$apps = $model->where('app_active',1)->get();
+			$apps = $model->get();
 			$menu = array();
 			foreach($apps as $app){
 				$menu[$app->id] = $app->toArray();
 				$model_apm = new CsfeAppMenu;
 				$level_ones = $model_apm->where('apm_level',1)->where('app_id',$app->id)->get();
-				if($level_ones){
-					foreach($level_ones as $level_one){
-						$menu_level_one = $level_one->toArray();
-						$level_twos = $model_apm->where('apm_level',2)->where('apm_father_id',$level_one->id)->get();
-						foreach($level_twos as $level_two){
-							$menu_level_one['level_two'][] = $level_two->toArray();
+				foreach($level_ones as $level_one){
+					$menu_level_one = $level_one->toArray();
+					$level_twos = $model_apm->where('apm_level',2)->where('apm_father_id',$level_one->id)->get();
+					foreach($level_twos as $level_two){
+						$menu_level_two = $level_two->toArray();
+						$level_threes = $model_apm->where('apm_level',3)->where('apm_father_id',$level_two->id)->get();
+						foreach($level_threes as $level_three){
+							$menu_level_two['level_three'][] = $level_three->toArray();
 						}
-						$menu[$app->id]['level_one'][] = $menu_level_one;
+						$menu_level_one['level_two'][] = $menu_level_two;
 					}
+					$menu[$app->id]['level_one'][] = $menu_level_one;
 				}
 			}
 

@@ -21,7 +21,7 @@
                                 </div>
                                 <div class="float-right">
                                     <el-tag @click="editItem(sItem.id)" size="mini" class="ml-5px cursor-pointer"><i class="el-icon-edit"></i></el-tag>
-                                    <el-tag @click="deleteItem(sItem.id)" type="danger" size="mini" class="ml-5px cursor-pointer"><i class="el-icon-delete"></i></el-tag>
+                                    <el-tag @click="deleteItem(sItem.id,(sItem.level_two?true:''))" type="danger" size="mini" class="ml-5px cursor-pointer"><i class="el-icon-delete"></i></el-tag>
                                 </div>
                             </a>
                             <ul v-if="sItem.level_two" class="sub-menu">
@@ -30,7 +30,7 @@
                                         <i :class="'menu-icon apps-icon '+cItem.apm_icon"></i>
                                         {{cItem.apm_title}}
 
-                                        <el-tag @click="deleteItem(cItem.id)" type="danger" size="mini" class="float-right ml-9px mr-10px"><i class="el-icon-delete"></i></el-tag>
+                                        <el-tag @click="deleteItem(cItem.id,(sItem.level_two?true:''))" type="danger" size="mini" class="float-right ml-9px mr-10px"><i class="el-icon-delete"></i></el-tag>
                                         <el-tag @click="editItem(cItem.id,sIndex)" size="mini" class="float-right ml-9px"><i class="el-icon-edit"></i></el-tag>
                                     </a>
                                     <ul v-if="cItem.level_three" class="sub-sub-menu">
@@ -128,9 +128,9 @@
 
             <div class="width-100 text-right">
                 <el-button @click="menuCreateUpdate" class="ml-20px mt-15px" size="mini">
-                    <span class="csfe-btn-text">{{$t('routine.update')}}</span>
+                    <span class="csfe-btn-text">{{nMenuType=='edit_item'?$t('routine.update'):$t('application.add_item')}}</span>
                 </el-button>
-                <el-button class="ml-20px mt-15px" size="mini">
+                <el-button @click="nMenuType = ''" class="ml-20px mt-15px" size="mini">
                     <span class="csfe-btn-text">{{$t('routine.cancel')}}</span>
                 </el-button>
             </div>
@@ -201,18 +201,34 @@
                     }
                 })
             },
-            deleteItem(id){
+            deleteItem(id,nextObj){
                 console.log(id)
                 let that = this;
-                that.$ajax.post(that.$api.appMenuDelete, {id:id}).then(res => {
-                    if (res.data.status){
-                        that.$message({message: that.$t('routine.delete_successfully'), type: 'success'});
-                        that.appMenu();
-                        that.nMenuType = '';
-                    }else {
-                        that.$message.error(res.data.message);
-                    }
-                })
+                if (nextObj){
+                    that.$alert(that.$t('routine.not_delete'), that.$t('routine.prompt'), {
+                        confirmButtonText: that.$t('routine.confirm'),
+                        type: 'warning',
+                        center: true,
+                        callback: action => {}
+                    });
+                }else {
+                    that.$confirm(that.$t('routine.confirm_deletion'), that.$t('routine.prompt'), {
+                        confirmButtonText: that.$t('routine.confirm'),
+                        cancelButtonText: that.$t('routine.cancel'),
+                        type: 'warning',
+                        center: true
+                    }).then(() => {
+                        that.$ajax.post(that.$api.appMenuDelete, {id:id}).then(res => {
+                            if (res.data.status){
+                                that.$message({message: that.$t('routine.delete_successfully'), type: 'success'});
+                                that.appMenu();
+                                that.nMenuType = '';
+                            }else {
+                                that.$message.error(res.data.message);
+                            }
+                        })
+                    }).catch(() => {});
+                }
             },
             menuCreateUpdate(){
                 let that = this;

@@ -16,7 +16,7 @@
 
                         <!-- 父级li选中active-page/open，子项选中 a > active -->
 
-                        <li v-for="(sItem,sIndex) in (settingType?menuData[settingType].level_one:$global.defaultMenu)"
+                        <li v-for="(sItem,sIndex) in (settingType?menuData[settingType].level_one || []:$global.defaultMenu)"
                             :class="(sItem.apm_url && sItem.apm_url == $page.url || sIndex == routeTwoKey)?'open':''">
 
                             <inertia-link v-if="sItem.apm_url && !sItem.level_two" :href="sItem.apm_url">
@@ -69,7 +69,7 @@
                                             <i class="fa fa-angle-down color-ffffff font-18"></i>
                                         </div>
                                         <el-dropdown-menu>
-                                            <el-dropdown-item v-for="(mItem,mIndex) in menuData" :command="mItem.id" :key="mIndex">{{mItem.app_title}}</el-dropdown-item>
+                                            <el-dropdown-item v-for="(mItem,mIndex) in menuData" v-if="mItem.app_active" :command="mItem.id" :key="mIndex">{{mItem.app_title}}</el-dropdown-item>
                                         </el-dropdown-menu>
                                     </el-dropdown>
                                 </li>
@@ -108,7 +108,7 @@
             <div class="page-inner no-page-title mobile-wrapper mobile-inner">
                 <div id="main-wrapper">
                     <main>
-                        <slot></slot>
+                        <slot v-if="isUrl"></slot>
                     </main>
                 </div>
 
@@ -131,24 +131,29 @@
                 settingType:'',
                 settingLabel:'Setting',
                 routeTwoKey:'',
-                routeThreeUrl:''
+                routeThreeUrl:'',
+                isUrl:false,
             }
         },
 
         created() {
-            // console.log(this.$page.props.common.app_menu)
+            console.log(this.$page)
             this.settingType = this.windowCheck.settingType
             this.settingLabel = this.windowCheck.settingLabel
             this.routeActive();
+            if (!this.isUrl){
+                location.replace('/')
+            }
         },
         methods: {
             handSetting(command){
                 let menu = this.menuData;
-                location.href='/home'
                 this.windowActions({
                     settingType:menu[command]?command:'',
                     settingLabel:menu[command]?menu[command].app_title:'Setting'
                 })
+                var Backlen=history.length;
+                location.replace('/')
 
             },
             handUser(command){
@@ -167,30 +172,38 @@
             routeActive(){
                 let that = this;
                 let url = that.$page.url;
-                let menuList = that.settingType?that.menuData[that.settingType].level_one:that.$global.defaultMenu
-                menuList.forEach((item,index)=>{
-                    if (item.level_two){
-                        item.level_two.forEach((tItem,tIndex)=>{
-                            if (tItem.apm_url == url){
-                                that.routeTwoKey = index;
-                            }else {
-                                if (tItem.level_three){
-                                    tItem.level_three.forEach((thItem,thIndex)=>{
+                let menuList = that.settingType?that.menuData[that.settingType].level_one || []:that.$global.defaultMenu
+                console.log(menuList,'------')
+                if (url && url != '/'){
+                    menuList.forEach((item,index)=>{
+                        if (item.level_two){
+                            item.level_two.forEach((tItem,tIndex)=>{
+                                if (tItem.apm_url == url){
+                                    that.routeTwoKey = index;
+                                    that.isUrl = true;
+                                }else {
+                                    if (tItem.level_three){
+                                        tItem.level_three.forEach((thItem,thIndex)=>{
 
-                                        url = url.indexOf('?') != -1 ? '/'+url.match(/\/(\S*)\?/)[1] :url
+                                            url = url.indexOf('?') != -1 ? '/'+url.match(/\/(\S*)\?/)[1] :url
 
-                                        // console.log(url)
+                                            // console.log(url)
 
-                                        if (thItem.apm_url == url){
-                                            that.routeTwoKey = index;
-                                            that.routeThreeUrl = tItem.apm_url;
-                                        }
-                                    })
+                                            if (thItem.apm_url == url){
+                                                that.isUrl = true;
+                                                that.routeTwoKey = index;
+                                                that.routeThreeUrl = tItem.apm_url;
+                                            }
+                                        })
+                                    }
                                 }
-                            }
-                        })
-                    }
-                })
+                            })
+                        }
+                    })
+                }else {
+                    that.isUrl = true;
+                }
+
             },
 
             ...mapActions( // 语法糖

@@ -41,7 +41,7 @@
                                     <el-table-column prop="app_description" :label="$t('application.description')"></el-table-column>
                                     <el-table-column prop="app_active" :label="$t('application.active')" width="150">
                                         <template slot-scope="scope">
-                                            <el-tag :type="scope.row.app_active?'':'info'" size="mini">{{scope.row.app_active?$t('routine.yes'):$t('routine.no')}}</el-tag>
+                                            <el-tag :type="scope.row.app_active=='1'?'':'info'" size="mini">{{scope.row.app_active=='1'?$t('routine.yes'):$t('routine.no')}}</el-tag>
                                         </template>
                                     </el-table-column>
                                 </el-table>
@@ -152,14 +152,15 @@
                     that.apiOperation(that.$api.appDelete,{id:id})
                     that.$message({
                         type: 'success',
-                        message: '删除成功!'
+                        message: that.$t('routine.delete_successfully')
                     });
                 }).catch(() => {});
             },
             apiOperation(api,form){
                 let that = this;
                 that.$ajax.post(api, form).then(res => {
-                    that.listData();
+                    // that.listData();
+                    location.replace(location)
                     that.dialogFormVisible = false
                 })
             },

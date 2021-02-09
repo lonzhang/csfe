@@ -4634,23 +4634,40 @@ __webpack_require__.r(__webpack_exports__);
         }
       });
     },
-    deleteItem: function deleteItem(id) {
+    deleteItem: function deleteItem(id, nextObj) {
       console.log(id);
       var that = this;
-      that.$ajax.post(that.$api.appMenuDelete, {
-        id: id
-      }).then(function (res) {
-        if (res.data.status) {
-          that.$message({
-            message: that.$t('routine.delete_successfully'),
-            type: 'success'
+
+      if (nextObj) {
+        that.$alert(that.$t('routine.not_delete'), that.$t('routine.prompt'), {
+          confirmButtonText: that.$t('routine.confirm'),
+          type: 'warning',
+          center: true,
+          callback: function callback(action) {}
+        });
+      } else {
+        that.$confirm(that.$t('routine.confirm_deletion'), that.$t('routine.prompt'), {
+          confirmButtonText: that.$t('routine.confirm'),
+          cancelButtonText: that.$t('routine.cancel'),
+          type: 'warning',
+          center: true
+        }).then(function () {
+          that.$ajax.post(that.$api.appMenuDelete, {
+            id: id
+          }).then(function (res) {
+            if (res.data.status) {
+              that.$message({
+                message: that.$t('routine.delete_successfully'),
+                type: 'success'
+              });
+              that.appMenu();
+              that.nMenuType = '';
+            } else {
+              that.$message.error(res.data.message);
+            }
           });
-          that.appMenu();
-          that.nMenuType = '';
-        } else {
-          that.$message.error(res.data.message);
-        }
-      });
+        })["catch"](function () {});
+      }
     },
     menuCreateUpdate: function menuCreateUpdate() {
       var that = this;
@@ -5631,23 +5648,29 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       settingType: '',
       settingLabel: 'Setting',
       routeTwoKey: '',
-      routeThreeUrl: ''
+      routeThreeUrl: '',
+      isUrl: false
     };
   },
   created: function created() {
-    // console.log(this.$page.props.common.app_menu)
+    console.log(this.$page);
     this.settingType = this.windowCheck.settingType;
     this.settingLabel = this.windowCheck.settingLabel;
     this.routeActive();
+
+    if (!this.isUrl) {
+      location.replace('/');
+    }
   },
   methods: _objectSpread({
     handSetting: function handSetting(command) {
       var menu = this.menuData;
-      location.href = '/home';
       this.windowActions({
         settingType: menu[command] ? command : '',
         settingLabel: menu[command] ? menu[command].app_title : 'Setting'
       });
+      var Backlen = history.length;
+      location.replace('/');
     },
     handUser: function handUser(command) {
       var that = this;
@@ -5664,27 +5687,35 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     routeActive: function routeActive() {
       var that = this;
       var url = that.$page.url;
-      var menuList = that.settingType ? that.menuData[that.settingType].level_one : that.$global.defaultMenu;
-      menuList.forEach(function (item, index) {
-        if (item.level_two) {
-          item.level_two.forEach(function (tItem, tIndex) {
-            if (tItem.apm_url == url) {
-              that.routeTwoKey = index;
-            } else {
-              if (tItem.level_three) {
-                tItem.level_three.forEach(function (thItem, thIndex) {
-                  url = url.indexOf('?') != -1 ? '/' + url.match(/\/(\S*)\?/)[1] : url; // console.log(url)
+      var menuList = that.settingType ? that.menuData[that.settingType].level_one || [] : that.$global.defaultMenu;
+      console.log(menuList, '------');
 
-                  if (thItem.apm_url == url) {
-                    that.routeTwoKey = index;
-                    that.routeThreeUrl = tItem.apm_url;
-                  }
-                });
+      if (url && url != '/') {
+        menuList.forEach(function (item, index) {
+          if (item.level_two) {
+            item.level_two.forEach(function (tItem, tIndex) {
+              if (tItem.apm_url == url) {
+                that.routeTwoKey = index;
+                that.isUrl = true;
+              } else {
+                if (tItem.level_three) {
+                  tItem.level_three.forEach(function (thItem, thIndex) {
+                    url = url.indexOf('?') != -1 ? '/' + url.match(/\/(\S*)\?/)[1] : url; // console.log(url)
+
+                    if (thItem.apm_url == url) {
+                      that.isUrl = true;
+                      that.routeTwoKey = index;
+                      that.routeThreeUrl = tItem.apm_url;
+                    }
+                  });
+                }
               }
-            }
-          });
-        }
-      });
+            });
+          }
+        });
+      } else {
+        that.isUrl = true;
+      }
     }
   }, (0,vuex__WEBPACK_IMPORTED_MODULE_0__.mapActions)( // 语法糖
   ['windowActions']))
@@ -6188,14 +6219,15 @@ __webpack_require__.r(__webpack_exports__);
         });
         that.$message({
           type: 'success',
-          message: '删除成功!'
+          message: that.$t('routine.delete_successfully')
         });
       })["catch"](function () {});
     },
     apiOperation: function apiOperation(api, form) {
       var that = this;
       that.$ajax.post(api, form).then(function (res) {
-        that.listData();
+        // that.listData();
+        location.replace(location);
         that.dialogFormVisible = false;
       });
     },
@@ -97173,7 +97205,10 @@ var render = function() {
                                 attrs: { type: "danger", size: "mini" },
                                 on: {
                                   click: function($event) {
-                                    return _vm.deleteItem(sItem.id)
+                                    _vm.deleteItem(
+                                      sItem.id,
+                                      sItem.level_two ? true : ""
+                                    )
                                   }
                                 }
                               },
@@ -97218,7 +97253,10 @@ var render = function() {
                                       attrs: { type: "danger", size: "mini" },
                                       on: {
                                         click: function($event) {
-                                          return _vm.deleteItem(cItem.id)
+                                          _vm.deleteItem(
+                                            cItem.id,
+                                            sItem.level_two ? true : ""
+                                          )
                                         }
                                       }
                                     },
@@ -97750,14 +97788,28 @@ var render = function() {
                     },
                     [
                       _c("span", { staticClass: "csfe-btn-text" }, [
-                        _vm._v(_vm._s(_vm.$t("routine.update")))
+                        _vm._v(
+                          _vm._s(
+                            _vm.nMenuType == "edit_item"
+                              ? _vm.$t("routine.update")
+                              : _vm.$t("application.add_item")
+                          )
+                        )
                       ])
                     ]
                   ),
                   _vm._v(" "),
                   _c(
                     "el-button",
-                    { staticClass: "ml-20px mt-15px", attrs: { size: "mini" } },
+                    {
+                      staticClass: "ml-20px mt-15px",
+                      attrs: { size: "mini" },
+                      on: {
+                        click: function($event) {
+                          _vm.nMenuType = ""
+                        }
+                      }
+                    },
                     [
                       _c("span", { staticClass: "csfe-btn-text" }, [
                         _vm._v(_vm._s(_vm.$t("routine.cancel")))
@@ -98969,7 +99021,7 @@ var render = function() {
             { staticClass: "accordion-menu left-menu" },
             _vm._l(
               _vm.settingType
-                ? _vm.menuData[_vm.settingType].level_one
+                ? _vm.menuData[_vm.settingType].level_one || []
                 : _vm.$global.defaultMenu,
               function(sItem, sIndex) {
                 return _c(
@@ -99145,11 +99197,16 @@ var render = function() {
                           _c(
                             "el-dropdown-menu",
                             _vm._l(_vm.menuData, function(mItem, mIndex) {
-                              return _c(
-                                "el-dropdown-item",
-                                { key: mIndex, attrs: { command: mItem.id } },
-                                [_vm._v(_vm._s(mItem.app_title))]
-                              )
+                              return mItem.app_active
+                                ? _c(
+                                    "el-dropdown-item",
+                                    {
+                                      key: mIndex,
+                                      attrs: { command: mItem.id }
+                                    },
+                                    [_vm._v(_vm._s(mItem.app_title))]
+                                  )
+                                : _vm._e()
                             }),
                             1
                           )
@@ -99271,7 +99328,7 @@ var render = function() {
         { staticClass: "page-inner no-page-title mobile-wrapper mobile-inner" },
         [
           _c("div", { attrs: { id: "main-wrapper" } }, [
-            _c("main", [_vm._t("default")], 2)
+            _c("main", [_vm.isUrl ? _vm._t("default") : _vm._e()], 2)
           ])
         ]
       )
@@ -100126,16 +100183,17 @@ var render = function() {
                                       "el-tag",
                                       {
                                         attrs: {
-                                          type: scope.row.app_active
-                                            ? ""
-                                            : "info",
+                                          type:
+                                            scope.row.app_active == "1"
+                                              ? ""
+                                              : "info",
                                           size: "mini"
                                         }
                                       },
                                       [
                                         _vm._v(
                                           _vm._s(
-                                            scope.row.app_active
+                                            scope.row.app_active == "1"
                                               ? _vm.$t("routine.yes")
                                               : _vm.$t("routine.no")
                                           )
@@ -118465,7 +118523,7 @@ var index = {
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse("{\"login\":{\"userName\":\"Staff ID or Email\",\"password\":\"Password\",\"remember_me\":\"Remember me\"},\"menu\":{\"home\":\"Home\",\"security\":\"Security\",\"business_units\":\"Business Units\",\"teams\":\"Teams\",\"users\":\"Users\",\"abilities\":\"Abilities\",\"roles\":\"Roles\",\"email_confiuration\":\"Email Confiuration\",\"mailboxes\":\"Mailboxes\",\"queues\":\"Queues\",\"emails\":\"Emails\",\"templates\":\"Templates\",\"processes\":\"Processes\",\"triggers\":\"Triggers\",\"cronjobs\":\"Cronjobs\",\"application\":\"Application\",\"apps\":\"Apps\",\"entites\":\"Entites\",\"views\":\"Views\",\"forms\":\"Forms\",\"data_management\":\"Data Management\",\"imports\":\"Imports\",\"logs\":\"Logs\",\"system_logs\":\"System Logs\",\"audit_histories\":\"Audit Histories\",\"search_records\":\"Search Records\",\"select_component\":\"Select Component\"},\"others\":{\"setting\":\"Setting\",\"logout\":\"Logout\",\"change_password\":\"Change Password\"},\"routine\":{\"required\":\"Required\",\"required_selection\":\"Required selection\",\"yes\":\"Yes\",\"no\":\"No\",\"no_data\":\"Not Data Found\",\"cancel\":\"Cancel\",\"confirm\":\"Confirm\",\"update\":\"Update\",\"a_total_of  \":\"A total of \",\"total \":\"Total\",\"records \":\"Records\",\"prompt\":\"Prompt\",\"confirm_deletion\":\"Confirm deletion?\",\"updated_successfully\":\"Updated successfully\",\"updated_failed\":\"Updated failed\",\"submitted_successfully\":\"Submitted successfully\",\"submitted_failed\":\"Submitted failed\",\"delete_successfully\":\"Delete successfully\",\"delete_failed\":\"Delete failed\"},\"security\":{\"user_title\":\"Security / User\",\"id\":\"ID\",\"name\":\"Name\",\"email\":\"Email\",\"business_unit\":\"Business Unit\",\"roles\":\"Roles\",\"copy\":\"Copy\",\"csv\":\"CSV\",\"excel\":\"Excel\",\"pdf\":\"PDF\",\"print\":\"Print\",\"column_visibility\":\"Column Visibility\",\"search\":\"Search\",\"new\":\"New\",\"delete\":\"Delete\",\"refresh\":\"Refresh\",\"export\":\"Export\",\"team_name\":\"Team Name\",\"main_phone\":\"Main Phone\",\"website\":\"Website\",\"parent_business\":\"Parent Business\",\"edit_user\":\"Edit User\",\"save\":\"Save\",\"save_close\":\"Save & Close\",\"cancel\":\"Cancel\"},\"application\":{\"application_apps\":\"Application/Apps\",\"title\":\"Title\",\"description\":\"Description\",\"active\":\"Active\",\"action\":\"Action\",\"delete\":\"Delete\",\"edit\":\"Edit\",\"select_component\":\"Select Component\",\"navigation_menu\":\"Navigation Menu\",\"views\":\"Views\",\"forms\":\"Forms\",\"manage_roles\":\"Manage Roles\",\"new\":\"New\",\"edit_item\":\"Edit Item\",\"add_item\":\"Add Item\",\"entity\":\"Entity\",\"icon\":\"Icon\",\"level\":\"Level\",\"level_1\":\"Level 1\",\"level_2\":\"Level 2\",\"level_3\":\"Level 3\",\"please_select_the_entity\":\"Please select the entity\",\"please_select_the_level\":\"Please select the level\",\"please_select_the_page\":\"Please select the Page\",\"icon_sample\":\"Icon sample\",\"page\":\"Page Url\",\"permission_path\":\"Permission\"}}");
+module.exports = JSON.parse("{\"login\":{\"userName\":\"Staff ID or Email\",\"password\":\"Password\",\"remember_me\":\"Remember me\"},\"menu\":{\"home\":\"Home\",\"security\":\"Security\",\"business_units\":\"Business Units\",\"teams\":\"Teams\",\"users\":\"Users\",\"abilities\":\"Abilities\",\"roles\":\"Roles\",\"email_confiuration\":\"Email Confiuration\",\"mailboxes\":\"Mailboxes\",\"queues\":\"Queues\",\"emails\":\"Emails\",\"templates\":\"Templates\",\"processes\":\"Processes\",\"triggers\":\"Triggers\",\"cronjobs\":\"Cronjobs\",\"application\":\"Application\",\"apps\":\"Apps\",\"entites\":\"Entites\",\"views\":\"Views\",\"forms\":\"Forms\",\"data_management\":\"Data Management\",\"imports\":\"Imports\",\"logs\":\"Logs\",\"system_logs\":\"System Logs\",\"audit_histories\":\"Audit Histories\",\"search_records\":\"Search Records\",\"select_component\":\"Select Component\"},\"others\":{\"setting\":\"Setting\",\"logout\":\"Logout\",\"change_password\":\"Change Password\"},\"routine\":{\"required\":\"Required\",\"required_selection\":\"Required selection\",\"yes\":\"Yes\",\"no\":\"No\",\"no_data\":\"Not Data Found\",\"cancel\":\"Cancel\",\"confirm\":\"Confirm\",\"update\":\"Update\",\"a_total_of  \":\"A total of \",\"total \":\"Total\",\"records \":\"Records\",\"prompt\":\"Prompt\",\"confirm_deletion\":\"Confirm deletion?\",\"not_delete\":\"Chain is lower, is not allowed to delete\",\"updated_successfully\":\"Updated successfully\",\"updated_failed\":\"Updated failed\",\"submitted_successfully\":\"Submitted successfully\",\"submitted_failed\":\"Submitted failed\",\"delete_successfully\":\"Delete successfully\",\"delete_failed\":\"Delete failed\"},\"security\":{\"user_title\":\"Security / User\",\"id\":\"ID\",\"name\":\"Name\",\"email\":\"Email\",\"business_unit\":\"Business Unit\",\"roles\":\"Roles\",\"copy\":\"Copy\",\"csv\":\"CSV\",\"excel\":\"Excel\",\"pdf\":\"PDF\",\"print\":\"Print\",\"column_visibility\":\"Column Visibility\",\"search\":\"Search\",\"new\":\"New\",\"delete\":\"Delete\",\"refresh\":\"Refresh\",\"export\":\"Export\",\"team_name\":\"Team Name\",\"main_phone\":\"Main Phone\",\"website\":\"Website\",\"parent_business\":\"Parent Business\",\"edit_user\":\"Edit User\",\"save\":\"Save\",\"save_close\":\"Save & Close\",\"cancel\":\"Cancel\"},\"application\":{\"application_apps\":\"Application/Apps\",\"title\":\"Title\",\"description\":\"Description\",\"active\":\"Active\",\"action\":\"Action\",\"delete\":\"Delete\",\"edit\":\"Edit\",\"select_component\":\"Select Component\",\"navigation_menu\":\"Navigation Menu\",\"views\":\"Views\",\"forms\":\"Forms\",\"manage_roles\":\"Manage Roles\",\"new\":\"New\",\"edit_item\":\"Edit Item\",\"add_item\":\"Add Item\",\"entity\":\"Entity\",\"icon\":\"Icon\",\"level\":\"Level\",\"level_1\":\"Level 1\",\"level_2\":\"Level 2\",\"level_3\":\"Level 3\",\"please_select_the_entity\":\"Please select the entity\",\"please_select_the_level\":\"Please select the level\",\"please_select_the_page\":\"Please select the Page\",\"icon_sample\":\"Icon sample\",\"page\":\"Page Url\",\"permission_path\":\"Permission\"}}");
 
 /***/ }),
 

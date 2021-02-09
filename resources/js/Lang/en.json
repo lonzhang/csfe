@@ -52,6 +52,7 @@
         "records ": "Records",
         "prompt": "Prompt",
         "confirm_deletion": "Confirm deletion?",
+        "not_delete": "Chain is lower, is not allowed to delete",
         "updated_successfully": "Updated successfully",
         "updated_failed": "Updated failed",
         "submitted_successfully": "Submitted successfully",
