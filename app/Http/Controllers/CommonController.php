@@ -8,11 +8,10 @@ use Request;
 class CommonController extends Controller
 {
     /**
-     * 获取app menu列表
-     * 传入值：$language 字符串
+     * 获取基础数据列表
      * 创建人：Leon
      */
-    public function getAppMenu(){
+    public function baseData(){
         return CacheServiceProvider::getBaseData(request('type'));
     }
 }

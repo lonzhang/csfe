@@ -3,7 +3,8 @@
         <div class="content-header">
             <h1 class="page-title m-0" @click="windowActions('这是测试')">{{windowCheck}}-增加</h1>
             <h1 class="page-title m-0" @click="remove('windowCheck')">清除</h1><br>
-            <div @click="removeAll">sdf</div>
+            <div @click="removeAll">removeAll</div>
+            <div @click="testActive('修改成功')">test-{{test}}</div>
 
 <!--            <div v-for="item in $page.props.common.app_menu[2]">-->
 <!--                <pre>{{$page.props.common.app_menu}}</pre>-->
@@ -14,7 +15,7 @@
             <div class="col-xl">
                 <div class="card">
                     <div class="card-body calc-height">
-                        <vue-simplebar style="max-height: 100%;">
+                        <vue-simplebar class="calc-h-c100-80">
                             <p> Your scrollable content goes here </p>
                             <el-table :data="tableData">
                                 <el-table-column prop="date" label="日期" width="140">
@@ -43,7 +44,7 @@
         },
 
         computed: {
-            ...mapGetters(['windowCheck']) // 动态计算属性，相当于this.$store.getters.windowCheck
+            ...mapGetters(['windowCheck','test']) // 动态计算属性，相当于this.$store.getters.windowCheck
         },
         data() {
             const item = {
@@ -60,7 +61,7 @@
         },
         methods:{
             ...mapActions( // 语法糖
-                ['windowActions','remove','removeAll'] // 相当于this.$store.dispatch('windowActions'),提交这个方法
+                ['windowActions','remove','removeAll','testActive'] // 相当于this.$store.dispatch('windowActions'),提交这个方法
             ),
         }
     }

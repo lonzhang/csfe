@@ -23,6 +23,11 @@ Vue.prototype.$api = api
 import global_ from './Config/Global'
 Vue.prototype.$global = global_.global_
 
+import { encryptString, decodeString, getUrlQuery } from './Utils/JsBase64'
+Vue.prototype.encryptString = encryptString
+Vue.prototype.decodeString = decodeString
+Vue.prototype.getUrlQuery = getUrlQuery
+
 import VueSimplebar from 'vue-simplebar'
 import 'vue-simplebar/dist/vue-simplebar.min.css'
 import store from './Store'

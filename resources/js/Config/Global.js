@@ -1,5 +1,8 @@
 const global_ = {
     loginLogo:'/images/CSFE_Trans.png',
+    loginLogoDark:'/images/CSFE_Trans_dark.png',
+    pageSizes:[100, 200, 300, 400],
+    pageSize:10,
     defaultMenu:[
         {
             apm_title: 'home',apm_url:'/home',apm_icon: 'fa fa-cog fa-fw',
@@ -7,9 +10,14 @@ const global_ = {
         {
             apm_title: 'security',apm_url:'',apm_icon: 'fa fa-shield',
             level_two:[
-                {apm_title: 'business_units',apm_url:'/test'},
-                {apm_title: 'teams',apm_url:''},
-                {apm_title: 'users',apm_url:'/user'},
+                {apm_title: 'business_units',apm_url:'/business-units',apm_icon:'fa fa-cog fa-fw'},
+                {apm_title: 'teams',apm_url:'/teams',apm_icon:'fa fa-cog fa-fw'},
+                {
+                    apm_title: 'users',apm_url:'/user',
+                    level_three:[
+                        {apm_title: 'users',apm_url:'/user/edit'},
+                    ]
+                },
                 {apm_title: 'abilities',apm_url:''},
                 {apm_title: 'roles',apm_url:''},
             ]
@@ -33,7 +41,12 @@ const global_ = {
         {
             apm_title: 'application',apm_url:'',apm_icon: 'fa fa-windows',
             level_two:[
-                {apm_title: 'apps',apm_url:''},
+                {
+                    apm_title: 'apps',apm_url:'/apps',
+                    level_three:[
+                        {apm_title: 'select_component',apm_url:'/apps/select-component'},
+                    ]
+                },
             ]
         },
         {

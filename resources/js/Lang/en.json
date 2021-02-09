@@ -1,7 +1,8 @@
 {
     "login": {
         "userName": "Staff ID or Email",
-        "password": "Password"
+        "password": "Password",
+        "remember_me": "Remember me"
     },
     "menu": {
         "home": "Home",
@@ -29,7 +30,8 @@
         "logs": "Logs",
         "system_logs": "System Logs",
         "audit_histories": "Audit Histories",
-        "search_records": "Search Records"
+        "search_records": "Search Records",
+        "select_component": "Select Component"
     },
     "others": {
         "setting": "Setting",
@@ -37,9 +39,80 @@
         "change_password": "Change Password"
     },
     "routine": {
-        "required": "Required"
+        "required": "Required",
+        "required_selection": "Required selection",
+        "yes": "Yes",
+        "no": "No",
+        "no_data": "Not Data Found",
+        "cancel": "Cancel",
+        "confirm": "Confirm",
+        "update": "Update",
+        "a_total_of  ": "A total of ",
+        "total ": "Total",
+        "records ": "Records",
+        "prompt": "Prompt",
+        "confirm_deletion": "Confirm deletion?",
+        "updated_successfully": "Updated successfully",
+        "updated_failed": "Updated failed",
+        "submitted_successfully": "Submitted successfully",
+        "submitted_failed": "Submitted failed",
+        "delete_successfully": "Delete successfully",
+        "delete_failed": "Delete failed"
     },
     "security": {
-        "user_title": "Security / User"
+        "user_title": "Security / User",
+        "id": "ID",
+        "name": "Name",
+        "email": "Email",
+        "business_unit": "Business Unit",
+        "roles": "Roles",
+        "copy": "Copy",
+        "csv": "CSV",
+        "excel": "Excel",
+        "pdf": "PDF",
+        "print": "Print",
+        "column_visibility": "Column Visibility",
+        "search": "Search",
+        "new": "New",
+        "delete": "Delete",
+        "refresh": "Refresh",
+        "export": "Export",
+        "team_name": "Team Name",
+        "main_phone": "Main Phone",
+        "website": "Website",
+        "parent_business": "Parent Business",
+        "edit_user": "Edit User",
+        "save": "Save",
+        "save_close": "Save & Close",
+        "cancel": "Cancel"
+    },
+    "application": {
+        "application_apps": "Application/Apps",
+        "title": "Title",
+        "description": "Description",
+        "active": "Active",
+        "action": "Action",
+        "delete": "Delete",
+        "edit": "Edit",
+        "select_component": "Select Component",
+        "navigation_menu": "Navigation Menu",
+        "views": "Views",
+        "forms": "Forms",
+        "manage_roles": "Manage Roles",
+        "new": "New",
+        "edit_item": "Edit Item",
+        "add_item": "Add Item",
+        "entity": "Entity",
+        "icon": "Icon",
+        "level": "Level",
+        "level_1": "Level 1",
+        "level_2": "Level 2",
+        "level_3": "Level 3",
+        "please_select_the_entity": "Please select the entity",
+        "please_select_the_level": "Please select the level",
+        "please_select_the_page": "Please select the Page",
+        "icon_sample": "Icon sample",
+        "page": "Page Url",
+        "permission_path": "Permission"
     }
 }

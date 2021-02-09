@@ -1,15 +1,10 @@
 // 提交 mutations是更改Vuex状态的唯一合法方法
-export const windowActions = (state,name)=>{
-    console.log(state,name,typeof name)
-    if (typeof name == "object"){
-        state.windowCheck = name
-    }else {
-        console.log('This is Name No Object')
-    }
+const testActive = (state,name)=>{
+    state.test = name
 }
 
 //清除单条数据，name，state=>key
-export const remove = (state,name) => {
+const remove = (state,name) => {
     if (typeof state[name] == "object"){
         state[name] = {}
     }else {
@@ -18,7 +13,7 @@ export const remove = (state,name) => {
 }
 
 //所有 state 数据
-export const removeAll = (state) => {
+const removeAll = (state) => {
     for (let key in state) {
         if (typeof state[key] == "object"){
             state[key] = {}
@@ -27,3 +22,25 @@ export const removeAll = (state) => {
         }
     }
 }
+
+const windowActions = (state,name)=>{
+    // console.log(state,name,typeof name)
+    if (typeof name == "object"){
+        state.windowCheck = name
+    }else {
+        console.log('This is Name No Object')
+    }
+}
+
+const loginAccountActions = (state,name)=>{
+        state.loginAccount = name
+}
+module.exports = {
+    testActive:testActive,
+    remove:remove,
+    removeAll:removeAll,
+    windowActions:windowActions,
+    loginAccountActions:loginAccountActions,
+}
+
+

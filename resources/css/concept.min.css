@@ -3257,14 +3257,14 @@ span.chat-title {
 
 .logo-box {
     display: block;
-    padding: 0 32px;
+    padding: 0 20px;
     color: #000 !important;
     background: 0 0;
-    height: 60px;
+    height: auto;
     font-weight: 700;
     font-size: 18px;
     text-align: left;
-    line-height: 60px;
+    /*line-height: 60px;*/
     display: block;
     text-decoration: none
 }
@@ -3403,6 +3403,7 @@ body:not(.page-sidebar-fixed).collapsed-sidebar .secondary-sidebar-menu {
     width: 22px;
     color: #e2e2e2;
     text-align: center;
+    font-weight: initial!important;
 }
 
 .secondary-sidebar-menu ul li.menu-divider {
@@ -3705,7 +3706,8 @@ body.settings-visible .settings-sidebar {
 /*}*/
 
 .secondary-sidebar-bar {
-    height: 61px;
+    height: auto;
+    margin-top: 25px;
     /*border-bottom: 1px solid #e5e9ec*/
 }
 

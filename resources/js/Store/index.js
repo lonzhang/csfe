@@ -8,6 +8,8 @@ import * as mutations from './mutations'
 Vue.use(Vuex)
 // 首先声明一个需要全局维护的状态 state 赋值为默认值
 const state = {
+    test:'This is Test',
+    loginAccount:{},
     windowCheck:{
         settingType:'',
         settingLabel:'Setting'
